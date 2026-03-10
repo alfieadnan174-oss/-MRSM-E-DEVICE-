@@ -2,8 +2,8 @@ const CACHE = 'edevice-v1';
 const ASSETS = [
   './index.html',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
+  './icon-192-1.png',
+  './icon-512-1.png',
   'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap',
   'https://cdn.jsdelivr.net/npm/chart.js'
 ];
