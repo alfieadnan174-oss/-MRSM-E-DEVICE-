@@ -1,704 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>MRSM E-DEVICE — Research Poster 24×60cm</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
-<style>
-/*
-  Physical size: 24cm × 60cm
-  At 96dpi: 24cm = 907px, 60cm = 2268px
-  We render at exactly these pixel dimensions.
-  Users can print via browser → Print → set paper to custom 24x60cm, no margins.
-*/
-:root {
-  --cyan:   #00d4ff;
-  --blue:   #0066ff;
-  --dark:   #050d2e;
-  --text:   #b8d8f8;
-  --white:  #ffffff;
-  --accent: #7eb8ff;
-  --gold:   #ffd166;
-  --green:  #06d6a0;
-  --red:    #ff6b6b;
-}
+  <meta charset="UTF-8">
+  <title>MRSM E DEVICE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f2c4c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="E-DEVICE">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+    }
+  </script>
+  <style>
+    :root {
+      --navy: #0f2c4c;
+      --blue: #1f4e8c;
+      --accent: #f4c430;
+      --bg: #f0f4fa;
+      --white: #ffffff;
+      --text: #1e2a38;
+      --muted: #6b7a8d;
+      --green: #2ecc71;
+      --red: #e74c3c;
+      --orange: #e67e22;
+      --card-shadow: 0 4px 20px rgba(15,44,76,0.09);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+    header { background: linear-gradient(135deg, var(--navy), var(--blue)); color: white; padding: 28px 24px 32px; position: relative; text-align: center; }
+    header::after { content: ""; position: absolute; bottom: 0; left: 0; height: 4px; width: 100%; background: var(--accent); }
+    header h1 { font-family: 'DM Serif Display', serif; font-size: 28px; letter-spacing: 1.5px; }
+    header p { margin-top: 6px; opacity: 0.8; font-size: 14px; }
 
-body {
-  background: #010610;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 30px 20px;
-  font-family: 'Exo 2', sans-serif;
-}
+    #profileBanner { display: none; background: white; border-bottom: 2px solid var(--bg); padding: 10px 24px; text-align: center; font-size: 14px; color: var(--muted); }
+    #profileBanner span { font-weight: 700; color: var(--blue); }
 
-/* ── POSTER: 24cm × 60cm at 96dpi ── */
-.poster {
-  width: 907px;
-  height: 2268px;
-  background: linear-gradient(170deg, #040b28 0%, #071440 20%, #0a1a5c 55%, #061030 100%);
-  border: 2px solid #00d4ff33;
-  border-radius: 16px;
-  padding: 38px 40px 42px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 100px #00aaff1a, inset 0 0 160px #00003a33;
-  display: flex;
-  flex-direction: column;
-}
+    .section { max-width: 580px; margin: 28px auto; padding: 28px 24px; background: white; border-radius: 16px; box-shadow: var(--card-shadow); }
+    .hidden { display: none; }
+    .section h2 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 6px; position: relative; padding-bottom: 10px; text-align: center; }
+    .section h2::after { content: ""; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 36px; height: 3px; background: var(--accent); border-radius: 2px; }
+    .section-sub { text-align: center; color: var(--muted); font-size: 14px; margin-top: 8px; margin-bottom: 20px; }
 
-/* Grid overlay */
-.poster::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(0,200,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,200,255,0.025) 1px, transparent 1px);
-  background-size: 36px 36px;
-  pointer-events: none;
-  z-index: 0;
-}
+    .back-link { background: none; border: none; color: var(--blue); font-weight: 600; font-size: 14px; cursor: pointer; padding: 0; margin-bottom: 18px; display: inline-block; }
+    .back-link:hover { text-decoration: underline; }
 
-/* Corner brackets */
-.corner {
-  position: absolute; width: 36px; height: 36px;
-  border-color: var(--cyan); border-style: solid;
-  opacity: 0.45; pointer-events: none; z-index: 3;
-}
-.corner-tl { top: 10px; left: 10px;  border-width: 2px 0 0 2px; }
-.corner-tr { top: 10px; right: 10px; border-width: 2px 2px 0 0; }
-.corner-bl { bottom: 10px; left: 10px;  border-width: 0 0 2px 2px; }
-.corner-br { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
+    .home-btn { display: block; width: 90%; margin: 14px auto; padding: 16px; font-size: 15px; font-weight: 600; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--blue), var(--navy)); color: white; cursor: pointer; transition: all 0.2s ease; font-family: 'DM Sans', sans-serif; }
+    .home-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,78,140,0.28); }
+    .home-btn.secondary { background: white; color: var(--blue); border: 2px solid var(--blue); }
+    .home-btn.secondary:hover { background: var(--bg); }
 
-/* Glow orbs */
-.orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; }
-.orb1 { width: 400px; height: 400px; background: #0044cc; opacity: 0.22; top: -80px; right: -80px; }
-.orb2 { width: 300px; height: 300px; background: #00bbff; opacity: 0.14; bottom: 300px; left: -90px; }
-.orb3 { width: 250px; height: 250px; background: #4400cc; opacity: 0.15; top: 40%; right: -50px; }
-.orb4 { width: 200px; height: 200px; background: #005533; opacity: 0.12; top: 68%; left: 60px; }
+    .btn { padding: 10px 18px; border-radius: 8px; border: none; background: var(--blue); color: white; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; transition: 0.2s ease; }
+    .btn:hover { background: var(--navy); }
+    .btn-danger { background: #e74c3c; } .btn-danger:hover { background: #c0392b; }
+    .btn-success { background: var(--green); } .btn-success:hover { background: #27ae60; }
 
-/* Scanline */
-@keyframes scan { 0%{top:-2%} 100%{top:102%} }
-.scanline {
-  position: absolute; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, transparent, rgba(0,200,255,0.05), transparent);
-  animation: scan 11s linear infinite;
-  pointer-events: none; z-index: 1;
-}
+    .form-group { margin-bottom: 16px; text-align: left; }
+    label { font-weight: 600; font-size: 14px; display: block; margin-bottom: 6px; }
+    select, input[type="text"], input[type="number"] { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid #dbe2ec; font-family: 'DM Sans', sans-serif; font-size: 14px; transition: border 0.2s; }
+    select:focus, input:focus { outline: none; border-color: var(--blue); }
+    textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid #dbe2ec; font-family: 'DM Sans', sans-serif; font-size: 14px; resize: vertical; min-height: 64px; }
+    textarea:focus { outline: none; border-color: var(--blue); }
 
-/* All direct children above bg */
-.top-bar, .main-header, .grid { position: relative; z-index: 2; }
+    /* QUICK PRESETS */
+    .preset-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .preset-btn { padding: 8px 13px; border-radius: 20px; border: 1.5px solid #dbe2ec; background: white; font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; color: var(--text); transition: 0.2s; white-space: nowrap; }
+    .preset-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
 
-/* ────────────────────────
-   STUDENTS BAR
-──────────────────────── */
-.top-bar {
-  text-align: center;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #00d4ff1e;
-  flex-shrink: 0;
-}
-.project-tag {
-  font-family: 'Orbitron', monospace;
-  font-size: 9px; letter-spacing: 5px;
-  color: #3366aa; text-transform: uppercase;
-  margin-bottom: 9px;
-}
-.students-row {
-  display: flex; justify-content: center;
-  gap: 32px; flex-wrap: wrap;
-}
-.student-item { font-size: 13px; color: var(--text); font-weight: 400; }
-.student-item span { color: var(--cyan); font-weight: 700; }
+    /* EFFORT */
+    .effort-row { display: flex; gap: 8px; }
+    .effort-tag { flex: 1; padding: 9px; border-radius: 8px; border: 1.5px solid #dbe2ec; background: white; font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; text-align: center; transition: 0.2s; }
+    .effort-tag.selected { border-color: var(--blue); background: var(--blue); color: white; }
+    .effort-tag[data-effort="Easy"].selected { background: var(--green); border-color: var(--green); }
+    .effort-tag[data-effort="Moderate"].selected { background: var(--orange); border-color: var(--orange); }
+    .effort-tag[data-effort="Heavy"].selected { background: var(--red); border-color: var(--red); }
 
-/* ────────────────────────
-   MAIN TITLE
-──────────────────────── */
-.main-header {
-  text-align: center;
-  margin-bottom: 28px;
-  flex-shrink: 0;
-}
-.title-main {
-  font-family: 'Orbitron', monospace;
-  font-size: 54px; font-weight: 900; letter-spacing: 6px;
-  background: linear-gradient(90deg, #00d4ff, #ffffff, #7eb8ff);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 18px #00aaff55);
-  line-height: 1.1;
-}
-.title-sub {
-  font-size: 13.5px; color: var(--accent);
-  letter-spacing: 3px; margin-top: 9px;
-  font-weight: 300; text-transform: uppercase;
-}
-.title-line {
-  width: 52%; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-  margin: 12px auto 0;
-}
+    /* CARDS */
+    .card { background: white; margin: 12px 0; padding: 16px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); text-align: left; border-left: 4px solid var(--blue); transition: transform 0.2s, box-shadow 0.2s; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+    .card.priority-high { border-left-color: var(--red); }
+    .card.priority-medium { border-left-color: var(--accent); }
+    .card.priority-low { border-left-color: var(--green); }
+    .card.helped { background: #f0faf4; border-left-color: var(--green); }
+    .card.mine { background: #f5f8ff; }
 
-/* ────────────────────────
-   GRID
-──────────────────────── */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  flex: 1;
-}
-.full-width { grid-column: 1 / -1; }
+    .pulse-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--red); margin-right: 6px; animation: pulse 1.4s infinite; vertical-align: middle; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.5)} }
 
-/* ────────────────────────
-   SECTION CARDS
-──────────────────────── */
-.section {
-  background: linear-gradient(135deg, rgba(0,65,155,0.28) 0%, rgba(0,18,75,0.48) 100%);
-  border: 1px solid rgba(0,175,255,0.22);
-  border-radius: 12px;
-  padding: 18px 20px;
-  position: relative; overflow: hidden;
-  backdrop-filter: blur(5px);
-}
-.section::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0,220,255,0.5), transparent);
-}
+    .card-meta { font-size: 13px; color: var(--muted); margin: 5px 0 10px; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-right: 5px; }
+    .badge-high { background: #fdecea; color: var(--red); }
+    .badge-medium { background: #fef9e7; color: #b7950b; }
+    .badge-low { background: #eafaf1; color: #1e8449; }
+    .badge-category { background: #eaf0fb; color: var(--blue); }
+    .badge-mine { background: #e8f0fe; color: #1a56c4; }
+    .badge-effort-easy { background: #eafaf1; color: #1e8449; }
+    .badge-effort-moderate { background: #fef5ec; color: #a04000; }
+    .badge-effort-heavy { background: #fdecea; color: var(--red); }
 
-.section-header {
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 13px;
-}
-.section-badge {
-  font-family: 'Orbitron', monospace;
-  font-size: 10px; font-weight: 700;
-  background: rgba(0,180,255,0.14);
-  border: 1px solid rgba(0,180,255,0.38);
-  color: var(--cyan);
-  padding: 3px 9px; border-radius: 20px;
-  letter-spacing: 1px; white-space: nowrap; flex-shrink: 0;
-}
-.section-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 12px; font-weight: 700;
-  color: var(--white); letter-spacing: 0.5px;
-  text-transform: uppercase; line-height: 1.3;
-}
-.marks-badge {
-  margin-left: auto;
-  font-family: 'Orbitron', monospace;
-  font-size: 10px; color: var(--gold);
-  background: rgba(255,209,102,0.1);
-  border: 1px solid rgba(255,209,102,0.3);
-  padding: 3px 9px; border-radius: 20px;
-  white-space: nowrap; flex-shrink: 0;
-}
+    /* LOG CARD */
+    .log-card { background: var(--bg); margin: 10px 0; padding: 14px 16px; border-radius: 10px; text-align: left; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .log-info { font-size: 14px; flex: 1; }
+    .log-type { font-weight: 700; color: var(--blue); }
+    .log-note { font-size: 13px; color: var(--muted); margin-top: 4px; font-style: italic; }
 
-/* ────────────────────────
-   SECTION 01 — PROBLEM
-──────────────────────── */
-.problem-intro {
-  font-size: 12.5px; color: var(--text);
-  line-height: 1.7; margin-bottom: 11px;
-}
-.obj-list { list-style: none; }
-.obj-list li {
-  font-size: 12.5px; color: var(--text);
-  line-height: 1.65; padding-left: 16px; position: relative;
-  margin-bottom: 5px;
-}
-.obj-list li::before {
-  content: '▸';
-  position: absolute; left: 0; color: var(--cyan); font-size: 9px; top: 3px;
-}
+    /* STATS */
+    .stats-row { display: flex; gap: 10px; margin: 18px 0; }
+    .stat-box { flex: 1; background: var(--bg); border-radius: 12px; padding: 14px 10px; text-align: center; }
+    .stat-val { font-size: 26px; font-weight: 700; color: var(--blue); font-family: 'DM Serif Display', serif; }
+    .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.3; }
 
-/* ────────────────────────
-   SECTION 02 — METHODOLOGY
-──────────────────────── */
-.steps { display: flex; flex-direction: column; gap: 9px; }
-.step { display: flex; align-items: flex-start; gap: 11px; }
-.step-num {
-  width: 22px; height: 22px;
-  background: rgba(0,175,255,0.18);
-  border: 1px solid rgba(0,175,255,0.45);
-  border-radius: 50%;
-  font-family: 'Orbitron', monospace;
-  font-size: 9px; font-weight: 700; color: var(--cyan);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; margin-top: 1px;
-}
-.step-text { font-size: 12.5px; color: var(--text); line-height: 1.6; }
-.step-text strong { color: var(--white); font-weight: 600; }
+    /* TOP CAT */
+    .top-cat-bar { background: linear-gradient(135deg, var(--navy), var(--blue)); color: white; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+    .top-cat-bar .label { font-size: 13px; opacity: 0.8; }
+    .top-cat-bar .value { font-size: 18px; font-weight: 700; font-family: 'DM Serif Display', serif; }
 
-/* ────────────────────────
-   SECTION 03 — RESULTS
-──────────────────────── */
-.results-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-}
-.result-card {
-  background: rgba(0,45,110,0.32);
-  border: 1px solid rgba(0,175,255,0.2);
-  border-radius: 9px; padding: 12px 10px;
-  text-align: center;
-}
-.result-icon { font-size: 22px; margin-bottom: 5px; display: block; }
-.result-val {
-  font-family: 'Orbitron', monospace;
-  font-size: 22px; font-weight: 900; color: var(--cyan);
-  filter: drop-shadow(0 0 6px #00aaff88); line-height: 1;
-}
-.result-unit { font-size: 9px; color: var(--accent); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
-.result-label { font-size: 11px; color: var(--text); margin-top: 5px; line-height: 1.45; }
+    #balanceMessage { text-align: center; font-weight: 600; margin: 8px 0 16px; font-size: 15px; }
 
-/* ────────────────────────
-   SECTION 04 — DATA
-──────────────────────── */
-.chart-area {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
-}
-.chart-title {
-  font-size: 11px; color: var(--accent);
-  text-align: center; margin-bottom: 10px;
-  font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
-}
-.bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.bar-label { font-size: 11px; color: var(--text); width: 110px; flex-shrink: 0; text-align: right; }
-.bar-track {
-  flex: 1; background: rgba(0,90,200,0.18);
-  border-radius: 4px; height: 16px; overflow: hidden;
-  border: 1px solid rgba(0,140,255,0.18);
-}
-.bar-fill {
-  height: 100%; border-radius: 4px;
-  display: flex; align-items: center; justify-content: flex-end;
-  padding-right: 5px;
-  font-size: 9px; font-weight: 700; color: #fff;
-}
-.bar-blue  { background: linear-gradient(90deg, #0050cc, #00aaff); }
-.bar-green { background: linear-gradient(90deg, #027a55, #06d6a0); }
-.bar-gold  { background: linear-gradient(90deg, #bb7700, #ffd166); }
+    .chart-wrap { margin: 16px 0; padding: 16px; background: var(--bg); border-radius: 12px; }
+    .chart-wrap h4 { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-.comp-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
-.comp-table th {
-  font-size: 10px; font-weight: 700; font-family: 'Orbitron', monospace;
-  color: var(--cyan); padding: 6px 8px;
-  background: rgba(0,175,255,0.1);
-  border-bottom: 1px solid rgba(0,175,255,0.28);
-  text-align: center;
-}
-.comp-table td {
-  font-size: 11px; color: var(--text);
-  padding: 6px 8px; text-align: center;
-  border-bottom: 1px solid rgba(0,90,200,0.18);
-}
-.comp-table tr:last-child td { border-bottom: none; }
-.comp-table td:first-child { text-align: left; color: var(--white); font-weight: 600; }
-.tag-yes { color: var(--green); font-weight: 700; }
-.tag-no  { color: var(--red);   font-weight: 700; }
-.tag-partial { color: var(--gold); font-weight: 700; }
+    /* PROGRESS BAR */
+    .needs-progress { margin-bottom: 18px; }
+    .needs-progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+    .progress-track { background: #dbe2ec; border-radius: 20px; height: 8px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), #27ae60); border-radius: 20px; transition: width 0.5s ease; }
 
-.ref-note {
-  font-size: 10px; color: #4d7799; font-style: italic;
-  margin-top: 10px; text-align: center; line-height: 1.55;
-  border-top: 1px solid rgba(0,140,255,0.14); padding-top: 7px;
-}
+    /* FILTER */
+    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .filter-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid #dbe2ec; background: white; font-size: 13px; font-family: 'DM Sans', sans-serif; cursor: pointer; font-weight: 500; transition: 0.2s; }
+    .filter-btn.active, .filter-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
 
-/* ────────────────────────
-   SECTION 05 — VISUAL EVIDENCE
-──────────────────────── */
-.evidence-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-}
-.evidence-item {
-  border: 1px solid rgba(0,175,255,0.22);
-  border-radius: 9px; overflow: hidden;
-  background: rgba(0,25,70,0.5);
-}
-.evidence-screen {
-  width: 100%; height: 100px;
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
-}
-.screen-dashboard { background: linear-gradient(135deg, #030f2e, #051a50); }
-.screen-dashboard::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(rgba(0,180,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,180,255,0.05) 1px, transparent 1px);
-  background-size: 12px 12px;
-}
-.screen-inner { position: relative; z-index: 1; width: 88%; }
-.mini-bar {
-  height: 7px; border-radius: 3px; margin-bottom: 5px;
-  background: linear-gradient(90deg, #0055cc, #00aaff);
-}
-.mini-bar.g { background: linear-gradient(90deg, #027a55, #06d6a0); }
-.mini-bar.r { background: linear-gradient(90deg, #cc2200, #ff6b6b); }
-.mini-bar.y { background: linear-gradient(90deg, #bb7700, #ffd166); }
+    #postNeedForm { display: none; background: var(--bg); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
 
-.screen-needs { background: linear-gradient(135deg, #041820, #072438); }
-.need-item { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; }
-.need-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.need-line { height: 5px; border-radius: 3px; flex: 1; background: rgba(0,175,255,0.3); }
+    .avatar-circle { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--navy)); color: white; font-size: 28px; font-family: 'DM Serif Display', serif; display: flex; align-items: center; justify-content: center; margin: 16px auto; }
 
-.screen-profile { background: linear-gradient(135deg, #180428, #260740); }
-.profile-circle {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: rgba(100,50,200,0.5);
-  border: 2px solid rgba(150,100,255,0.5);
-  margin: 0 auto 5px;
-}
-.profile-bar { height: 5px; border-radius: 3px; margin-bottom: 4px; }
+    hr { border: none; border-top: 1px solid #eaeff6; margin: 18px 0; }
+    #confirmation { color: var(--green); font-weight: 600; margin-top: 10px; min-height: 22px; font-size: 14px; text-align: center; }
 
-.evidence-cap {
-  font-size: 11px; color: var(--text); text-align: center;
-  padding: 8px 10px; line-height: 1.45; font-weight: 300;
-}
-.evidence-cap strong {
-  color: var(--cyan); font-size: 11px;
-  display: block; margin-bottom: 2px; font-weight: 600;
-}
-
-/* ────────────────────────
-   SECTION 06 — FUTURE
-──────────────────────── */
-.future-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-}
-.future-card {
-  background: rgba(0,35,90,0.35);
-  border: 1px solid rgba(0,175,255,0.18);
-  border-radius: 9px; padding: 14px 12px;
-  text-align: center;
-}
-.future-icon { font-size: 24px; display: block; margin-bottom: 7px; }
-.future-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 9.5px; font-weight: 700;
-  color: var(--white); margin-bottom: 6px;
-  letter-spacing: 0.3px; text-transform: uppercase;
-}
-.future-desc { font-size: 11px; color: var(--text); line-height: 1.5; font-weight: 300; }
-
-/* ────────────────────────
-   FOOTER
-──────────────────────── */
-.footer {
-  text-align: center; margin-top: 18px;
-  position: relative; z-index: 2; flex-shrink: 0;
-}
-.footer-line {
-  width: 65%; height: 1px;
-  background: linear-gradient(90deg, transparent, #00d4ff44, transparent);
-  margin: 0 auto 9px;
-}
-.footer-text {
-  font-family: 'Orbitron', monospace;
-  font-size: 8.5px; color: #2d4a66; letter-spacing: 2.5px;
-}
-</style>
+    #aboutSection p { text-align: left; margin-bottom: 14px; line-height: 1.7; font-size: 15px; }
+    .sdg-tag { display: inline-block; background: var(--navy); color: white; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; margin: 8px 0; }
+  </style>
 </head>
 <body>
-<div class="poster">
 
-  <!-- Decorative -->
-  <div class="corner corner-tl"></div>
-  <div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div>
-  <div class="corner corner-br"></div>
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
-  <div class="orb orb4"></div>
-  <div class="scanline"></div>
+<header>
+  <h1>MRSM E DEVICE</h1>
+  <p>Mutual Resource & Skill Matcher</p>
+</header>
 
-  <!-- ── STUDENTS ── -->
-  <div class="top-bar">
-    <div class="project-tag">MRSM E-DEVICE &nbsp;·&nbsp; Research Poster</div>
-    <div class="students-row">
-      <div class="student-item">Muhammad Alfie bin Adnan &nbsp;|&nbsp; <span>SC231060</span></div>
-      <div class="student-item">Aaron Jones AK Stanley &nbsp;|&nbsp; <span>SC231001</span></div>
-      <div class="student-item">Afiq Najmuddin bin Mohammad Noh &nbsp;|&nbsp; <span>SC231008</span></div>
-    </div>
-  </div>
-
-  <!-- ── TITLE ── -->
-  <div class="main-header">
-    <div class="title-main">MRSM E-DEVICE</div>
-    <div class="title-sub">A Web-Based Community Support Visualization Platform</div>
-    <div class="title-line"></div>
-  </div>
-
-  <!-- ── CONTENT GRID ── -->
-  <div class="grid">
-
-    <!-- 01 PROBLEM STATEMENT & OBJECTIVES (/5) -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-badge">01</div>
-        <div class="section-title">Problem Statement &amp; Objectives</div>
-        <div class="marks-badge">/5</div>
-      </div>
-      <p class="problem-intro">
-        Modern communities rely on informal support networks — caregiving, emotional assistance, and voluntary task-sharing. However, this work remains <strong style="color:#fff">invisible and untracked</strong>, resulting in imbalanced participation, burnout, and inequality. No structured digital platform currently exists to coordinate or visualize these community efforts.
-      </p>
-      <ul class="obj-list">
-        <li>Develop a web-based platform to <strong style="color:#fff">record and categorize</strong> community support activities</li>
-        <li>Visualize the <strong style="color:#fff">give-and-receive balance</strong> to expose participation imbalances</li>
-        <li>Centralize community needs into a <strong style="color:#fff">structured, searchable system</strong> without monetary exchange</li>
-        <li>Promote equitable redistribution of neighborhood support aligned with <strong style="color:#ffd166">SDG 11</strong> — Sustainable Cities and Communities</li>
-      </ul>
-    </div>
-
-    <!-- 02 METHODOLOGY & PROCESS (/5) -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-badge">02</div>
-        <div class="section-title">Methodology &amp; Project Process</div>
-        <div class="marks-badge">/5</div>
-      </div>
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-text"><strong>Problem Analysis</strong> — Literature review on invisible community labor and existing digital platform gaps</div>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-text"><strong>System Design</strong> — Wireframing, data structure planning, and front-end architecture using HTML, CSS &amp; JavaScript</div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-text"><strong>Prototype Development</strong> — Built analytics dashboard, activity recording module, and Community Needs Board</div>
-        </div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <div class="step-text"><strong>Testing &amp; Validation</strong> — Mock community data used; local storage implemented to simulate persistent user data</div>
-        </div>
-        <div class="step">
-          <div class="step-num">5</div>
-          <div class="step-text"><strong>Evaluation &amp; Refinement</strong> — Usability review conducted; improvements applied based on testing findings</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 03 PROJECT RESULTS (/5) -->
-    <div class="section full-width">
-      <div class="section-header">
-        <div class="section-badge">03</div>
-        <div class="section-title">Project Results &amp; Outcomes</div>
-        <div class="marks-badge">/5</div>
-      </div>
-      <div class="results-grid">
-        <div class="result-card">
-          <span class="result-icon">📋</span>
-          <div class="result-val">3</div>
-          <div class="result-unit">Core Modules</div>
-          <div class="result-label">Activity Recording, Analytics Dashboard &amp; Community Needs Board successfully built</div>
-        </div>
-        <div class="result-card">
-          <span class="result-icon">📊</span>
-          <div class="result-val">100%</div>
-          <div class="result-unit">Data Transparency</div>
-          <div class="result-label">Give/receive balance visualization successfully displayed for all mock users</div>
-        </div>
-        <div class="result-card">
-          <span class="result-icon">⚡</span>
-          <div class="result-val">↑40%</div>
-          <div class="result-unit">Awareness Increase</div>
-          <div class="result-label">Improved awareness of support distribution identified during user testing</div>
-        </div>
-        <div class="result-card">
-          <span class="result-icon">🔄</span>
-          <div class="result-val">$0</div>
-          <div class="result-unit">Monetary Exchange</div>
-          <div class="result-label">Platform operates fully without any financial transactions between users</div>
-        </div>
-        <div class="result-card">
-          <span class="result-icon">🏘️</span>
-          <div class="result-val">5+</div>
-          <div class="result-unit">Needs Identified</div>
-          <div class="result-label">Community needs successfully listed, claimed and redistributed via the platform</div>
-        </div>
-        <div class="result-card">
-          <span class="result-icon">🎯</span>
-          <div class="result-val">SDG11</div>
-          <div class="result-unit">Goal Alignment</div>
-          <div class="result-label">Directly supports inclusive, resilient, and sustainable community goals</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 04 DATA, GRAPHS & ANALYSIS (/10) -->
-    <div class="section full-width">
-      <div class="section-header">
-        <div class="section-badge">04</div>
-        <div class="section-title">Data, Graphs &amp; Analysis</div>
-        <div class="marks-badge">/10</div>
-      </div>
-      <div class="chart-area">
-
-        <!-- Bar Chart -->
-        <div>
-          <div class="chart-title">User Participation Levels — Mock Test (n=10)</div>
-          <div class="bar-row">
-            <div class="bar-label">Active Givers</div>
-            <div class="bar-track"><div class="bar-fill bar-blue" style="width:75%">75%</div></div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Active Receivers</div>
-            <div class="bar-track"><div class="bar-fill bar-green" style="width:55%">55%</div></div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Inactive Users</div>
-            <div class="bar-track"><div class="bar-fill bar-gold" style="width:30%">30%</div></div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Needs Fulfilled</div>
-            <div class="bar-track"><div class="bar-fill bar-green" style="width:68%">68%</div></div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Needs Pending</div>
-            <div class="bar-track"><div class="bar-fill bar-gold" style="width:32%">32%</div></div>
-          </div>
-          <div class="ref-note">
-            Source: Internal user testing (n=10). Data simulated using mock community scenarios to demonstrate system usability and analytical capability.
-          </div>
-        </div>
-
-        <!-- Comparison Table -->
-        <div>
-          <div class="chart-title">Platform Comparison: MRSM E-Device vs Alternatives</div>
-          <table class="comp-table">
-            <thead>
-              <tr>
-                <th>Feature</th>
-                <th>E-Device</th>
-                <th>Nextdoor</th>
-                <th>Manual</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>Activity Recording</td><td class="tag-yes">✔</td><td class="tag-partial">~</td><td class="tag-no">✘</td></tr>
-              <tr><td>Balance Visualization</td><td class="tag-yes">✔</td><td class="tag-no">✘</td><td class="tag-no">✘</td></tr>
-              <tr><td>Community Needs Board</td><td class="tag-yes">✔</td><td class="tag-partial">~</td><td class="tag-no">✘</td></tr>
-              <tr><td>No Monetary Exchange</td><td class="tag-yes">✔</td><td class="tag-no">✘</td><td class="tag-yes">✔</td></tr>
-              <tr><td>Analytics Dashboard</td><td class="tag-yes">✔</td><td class="tag-partial">~</td><td class="tag-no">✘</td></tr>
-              <tr><td>Structured &amp; Scalable</td><td class="tag-yes">✔</td><td class="tag-partial">~</td><td class="tag-no">✘</td></tr>
-            </tbody>
-          </table>
-          <div class="ref-note">
-            References: Alston, P. (2019). <em>Community Digital Infrastructure &amp; SDG11.</em> UN Report. &nbsp;|&nbsp;
-            Cahn, E. (2004). <em>No More Throw-Away People.</em> Essential Books. &nbsp;|&nbsp;
-            Hampton, K. &amp; Wellman, B. (2003). <em>Neighboring in Netville.</em> City &amp; Community, 2(4), 277–311.
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- 05 VISUAL EVIDENCE (/5) -->
-    <div class="section full-width">
-      <div class="section-header">
-        <div class="section-badge">05</div>
-        <div class="section-title">Visual Evidence — Prototype Interface Screenshots</div>
-        <div class="marks-badge">/5</div>
-      </div>
-      <div class="evidence-grid">
-
-        <div class="evidence-item">
-          <div class="evidence-screen screen-dashboard">
-            <div class="screen-inner">
-              <div style="font-family:monospace;font-size:8px;color:#00aaff;margin-bottom:7px;text-align:center;letter-spacing:2px;">ANALYTICS DASHBOARD</div>
-              <div class="mini-bar" style="width:80%"></div>
-              <div class="mini-bar g" style="width:62%"></div>
-              <div class="mini-bar r" style="width:40%"></div>
-              <div class="mini-bar y" style="width:55%"></div>
-            </div>
-          </div>
-          <div class="evidence-cap">
-            <strong>Analytics Dashboard</strong>
-            Bar graphs displaying the give/receive balance and participation levels across community members
-          </div>
-        </div>
-
-        <div class="evidence-item">
-          <div class="evidence-screen screen-needs">
-            <div class="screen-inner">
-              <div style="font-family:monospace;font-size:8px;color:#00ccaa;margin-bottom:8px;text-align:center;letter-spacing:2px;">COMMUNITY NEEDS</div>
-              <div class="need-item"><div class="need-dot" style="background:#06d6a0"></div><div class="need-line" style="width:85%"></div></div>
-              <div class="need-item"><div class="need-dot" style="background:#ffd166"></div><div class="need-line" style="width:63%"></div></div>
-              <div class="need-item"><div class="need-dot" style="background:#ff6b6b"></div><div class="need-line" style="width:47%"></div></div>
-              <div class="need-item"><div class="need-dot" style="background:#00d4ff"></div><div class="need-line" style="width:72%"></div></div>
-            </div>
-          </div>
-          <div class="evidence-cap">
-            <strong>Community Needs Board</strong>
-            Structured listing of community needs available for claiming and redistribution by members
-          </div>
-        </div>
-
-        <div class="evidence-item">
-          <div class="evidence-screen screen-profile">
-            <div class="screen-inner" style="text-align:center">
-              <div class="profile-circle"></div>
-              <div class="profile-bar" style="width:72%;margin:0 auto;background:rgba(150,100,255,0.4)"></div>
-              <div class="profile-bar" style="width:50%;margin:4px auto 0;background:rgba(0,200,255,0.3)"></div>
-              <div style="font-family:monospace;font-size:8px;color:#aa88ff;margin-top:5px;letter-spacing:2px">USER PROFILE</div>
-            </div>
-          </div>
-          <div class="evidence-cap">
-            <strong>User Profile &amp; Activity Log</strong>
-            Individual contribution history and personal support record tracking per community member
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- 06 FUTURE IMPROVEMENTS -->
-    <div class="section full-width">
-      <div class="section-header">
-        <div class="section-badge">06</div>
-        <div class="section-title">Future Improvements &amp; Scalability</div>
-      </div>
-      <div class="future-grid">
-        <div class="future-card">
-          <span class="future-icon">🔐</span>
-          <div class="future-title">Multi-User Authentication</div>
-          <div class="future-desc">Secure login system supporting multiple community accounts with role-based access control</div>
-        </div>
-        <div class="future-card">
-          <span class="future-icon">☁️</span>
-          <div class="future-title">Cloud Synchronization</div>
-          <div class="future-desc">Replace local storage with a cloud backend for real-time data persistence across devices</div>
-        </div>
-        <div class="future-card">
-          <span class="future-icon">📍</span>
-          <div class="future-title">Geolocation Filtering</div>
-          <div class="future-desc">Filter and match community needs based on geographic proximity and user location</div>
-        </div>
-        <div class="future-card">
-          <span class="future-icon">🤖</span>
-          <div class="future-title">Automated Prioritization</div>
-          <div class="future-desc">AI-driven prioritization of urgent community needs to optimize support redistribution</div>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- end grid -->
-
-  <!-- ── FOOTER ── -->
-  <div class="footer">
-    <div class="footer-line"></div>
-    <div class="footer-text">MRSM E-DEVICE &nbsp;·&nbsp; Research Poster &nbsp;·&nbsp; SC231060 &nbsp;·&nbsp; SC231001 &nbsp;·&nbsp; SC231008</div>
-  </div>
-
+<div id="profileBanner">
+  Logged in as <span id="bannerName">—</span> &nbsp;·&nbsp; <span id="bannerRole">—</span>
+  &nbsp;&nbsp;<button onclick="logout()" style="background:none;border:1.5px solid #dbe2ec;color:var(--muted);font-size:12px;padding:3px 10px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;">Log Out</button>
 </div>
-</body>
-</html>
+
+<main>
+
+  <!-- PROFILE SETUP -->
+  <section id="profileSetupSection" class="section" style="text-align:center;">
+    <h2>Welcome</h2>
+    <p class="section-sub">Set up your display profile to get started.</p>
+    <div id="profileAvatar" class="avatar-circle">?</div>
+    <div class="form-group" style="margin-top:12px;">
+      <label>Your Name</label>
+      <input type="text" id="profileName" placeholder="e.g. Ahmad Ridhwan">
+    </div>
+    <div class="form-group">
+      <label>Your Role in Community</label>
+      <select id="profileRole">
+        <option value="Resident">Resident</option>
+        <option value="Volunteer">Volunteer</option>
+        <option value="Student">Student</option>
+        <option value="Community Leader">Community Leader</option>
+        <option value="Caregiver">Caregiver</option>
+      </select>
+    </div>
+    <button class="btn" onclick="saveProfile()" style="width:100%;padding:14px;font-size:15px;">Enter Community →</button>
+  </section>
+
+  <!-- HOME -->
+  <section id="homeSection" class="section hidden">
+    <h2>Strengthening Neighbourhood Support</h2>
+    <p class="section-sub">Visualizing and redistributing community care work.</p>
+    <button class="home-btn" onclick="showSection('logSection')">📋 &nbsp;Support Log</button>
+    <button class="home-btn" onclick="showSection('dashboardSection')">📊 &nbsp;Care Insights</button>
+    <button class="home-btn" onclick="showSection('boardSection')">🤝 &nbsp;Community Needs</button>
+    <button class="home-btn secondary" onclick="showSection('aboutSection')">ℹ️ &nbsp;About This Project</button>
+  </section>
+
+  <!-- SUPPORT LOG -->
+  <section id="logSection" class="section hidden">
+    <h2>Support Log</h2>
+    <button class="back-link" onclick="showSection('homeSection')">← Back</button>
+
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;text-align:left;font-weight:600;">Quick-add:</p>
+    <div class="preset-row" id="presetRow"></div>
+    <hr>
+
+    <div class="form-group">
+      <label>Type of Support</label>
+      <select id="type">
+        <option value="Giving">Giving</option>
+        <option value="Receiving">Receiving</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <select id="category">
+        <option value="Physical">Physical</option>
+        <option value="Emotional">Emotional</option>
+        <option value="Time">Time</option>
+        <option value="Skills">Skills</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Hours</label>
+      <input type="number" id="hours" min="1" placeholder="e.g. 2">
+    </div>
+    <div class="form-group">
+      <label>Notes <span style="font-weight:400;color:var(--muted);">(optional)</span></label>
+      <textarea id="logNote" placeholder="e.g. Helped Mak Cik Zainab with grocery run"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Effort Level</label>
+      <div class="effort-row">
+        <div class="effort-tag" data-effort="Easy" onclick="selectEffort(this)">😌 Easy</div>
+        <div class="effort-tag" data-effort="Moderate" onclick="selectEffort(this)">💪 Moderate</div>
+        <div class="effort-tag" data-effort="Heavy" onclick="selectEffort(this)">🔥 Heavy</div>
+      </div>
+    </div>
+    <button class="btn" onclick="saveLog()" style="width:100%;padding:13px;margin-top:4px;">Save Log</button>
+    <p id="confirmation"></p>
+
+    <hr>
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">Saved Activities</h3>
+    <div id="logList"></div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dashboardSection" class="section hidden">
+    <h2>Care Insights</h2>
+    <button class="back-link" onclick="showSection('homeSection')">← Back</button>
+
+    <div id="topCatBar" class="top-cat-bar" style="display:none;">
+      <div><div class="label">Your Top Category</div><div class="value" id="topCatVal">—</div></div>
+      <div style="font-size:28px;" id="topCatEmoji">🏆</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val" id="totalGiving">0</div><div class="stat-lbl">Hours Giving</div></div>
+      <div class="stat-box"><div class="stat-val" id="totalReceiving">0</div><div class="stat-lbl">Hours Receiving</div></div>
+      <div class="stat-box"><div class="stat-val" id="totalLogs">0</div><div class="stat-lbl">Total Logs</div></div>
+    </div>
+
+    <p id="balanceMessage"></p>
+
+    <div class="chart-wrap"><h4>Giving vs Receiving</h4><canvas id="careChart" height="210"></canvas></div>
+    <div class="chart-wrap"><h4>Your Activity by Category</h4><canvas id="categoryChart" height="210"></canvas></div>
+    <div class="chart-wrap"><h4>Your 7-Day Activity Trend</h4><canvas id="trendChart" height="200"></canvas></div>
+    <div class="chart-wrap"><h4>Community Hours Given · Mock Data</h4><canvas id="communityChart" height="210"></canvas></div>
+    <div class="chart-wrap"><h4>Community Needs by Category</h4><canvas id="needsCategoryChart" height="210"></canvas></div>
+    <div class="chart-wrap"><h4>Needs Fulfilment Rate</h4><canvas id="fulfilmentChart" height="180"></canvas></div>
+  </section>
+
+  <!-- COMMUNITY NEEDS -->
+  <section id="boardSection" class="section hidden">
+    <h2>Community Needs</h2>
+    <button class="back-link" onclick="showSection('homeSection')">← Back</button>
+
+    <div class="needs-progress">
+      <div class="needs-progress-label"><span>Needs Fulfilled</span><span id="progressLabel">0 / 0</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <button class="btn" onclick="togglePostForm()" style="width:100%;margin-bottom:14px;">+ Post a Need</button>
+
+    <div id="postNeedForm">
+      <div class="form-group">
+        <label>Describe the Need</label>
+        <textarea id="needTitle" placeholder="e.g. Need help carrying groceries on Thursday"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="needCategory">
+          <option value="Physical">Physical</option>
+          <option value="Emotional">Emotional</option>
+          <option value="Time">Time</option>
+          <option value="Skills">Skills</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select id="needPriority">
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+      <button class="btn btn-success" onclick="postNeed()" style="width:100%;">Submit Need</button>
+    </div>
+
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="filterNeeds('All',this)">All</button>
+      <button class="filter-btn" onclick="filterNeeds('Physical',this)">Physical</button>
+      <button class="filter-btn" onclick="filterNeeds('Emotional',this)">Emotional</button>
+      <button class="filter-btn" onclick="filterNeeds('Time',this)">Time</button>
+      <button class="filter-btn" onclick="filterNeeds('Skills',this)">Skills</button>
+    </div>
+
+    <div id="needsContainer"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="aboutSection" class="section hidden">
+    <h2>About This Project</h2>
+    <button class="back-link" onclick="showSection('homeSection')">← Back</button>
+    <p><strong>MRSM E DEVICE</strong> (Mutual Resource & Skill Matcher – Empowerment DEVICE) is a digital platform designed to visualize and redistribute community support.</p>
+    <p>The system makes invisible care work measurable, highlights imbalances in giving and receiving support, and connects neighbourhood needs with local capacity.</p>
+    <span class="sdg-tag">🌍 SDG 11 – Sustainable Cities and Communities</span>
+    <p style="margin-top:14px;">Promoting resilient and supportive neighbourhood ecosystems. Developed as part of the SEM enrichment initiative — demonstrating how technology can strengthen community coordination without monetary exchange.</p>
+  </section>
+
+</main>
+
+<script>
+// =========================
+// HELPERS
+// =========================
+function daysAgo(n) {
+  let d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toLocaleDateString('en-MY');
+}
+
+// =========================
+// PLACEHOLDER DATA
+// =========================
+const PLACEHOLDER_LOGS = [
+  { type:'Giving',    category:'Physical',  hours:2, effort:'Moderate', note:"Helped Pak Hamid carry furniture to his new unit",           date:daysAgo(0) },
+  { type:'Giving',    category:'Skills',    hours:3, effort:'Moderate', note:"Tutored two Form 3 students in Additional Mathematics",      date:daysAgo(1) },
+  { type:'Receiving', category:'Emotional', hours:1, effort:'Easy',     note:"Check-in call with Kak Suraya during a hard week
