@@ -1,1 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MRSM E DEVICE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f2c4c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="E-DEVICE">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+    }
+  </script>
+  <style>
+    :root {
+      --navy: #0f2c4c;
+      --blue: #1f4e8c;
+      --accent: #f4c430;
+      --bg: #f0f4fa;
+      --white: #ffffff;
+      --text: #1e2a38;
+      --muted: #6b7a8d;
+      --green: #2ecc71;
+      --red: #e74c3c;
+      --orange: #e67e22;
+      --card-shadow: 0 4px 20px rgba(15,44,76,0.09);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
+    header { background: linear-gradient(135deg, var(--navy), var(--blue)); color: white; padding: 28px 24px 32px; position: relative; text-align: center; }
+    header::after { content: ""; position: absolute; bottom: 0; left: 0; height: 4px; width: 100%; background: var(--accent); }
+    header h1 { font-family: 'DM Serif Display', serif; font-size: 28px; letter-spacing: 1.5px; }
+    header p { margin-top: 6px; opacity: 0.8; font-size: 14px; }
+
+    #profileBanner { display: none; background: white; border-bottom: 2px solid var(--bg); padding: 10px 24px; text-align: center; font-size: 14px; color: var(--muted); }
+    #profileBanner span { font-weight: 700; color: var(--blue); }
+
+    .section { max-width: 580px; margin: 28px auto; padding: 28px 24px; background: white; border-radius: 16px; box-shadow: var(--card-shadow); }
+    .hidden { display: none; }
+    .section h2 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 6px; position: relative; padding-bottom: 10px; text-align: center; }
+    .section h2::after { content: ""; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 36px; height: 3px; background: var(--accent); border-radius: 2px; }
+    .section-sub { text-align: center; color: var(--muted); font-size: 14px; margin-top: 8px; margin-bottom: 20px; }
+
+    .back-link { background: none; border: none; color: var(--blue); font-weight: 600; font-size: 14px; cursor: pointer; padding: 0; margin-bottom: 18px; display: inline-block; }
+    .back-link:hover { text-decoration: underline; }
+
+    .home-btn { display: block; width: 90%; margin: 14px auto; padding: 16px; font-size: 15px; font-weight: 600; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--blue), var(--navy)); color: white; cursor: pointer; transition: all 0.2s ease; font-family: 'DM Sans', sans-serif; }
+    .home-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,78,140,0.28); }
+    .home-btn.secondary { background: white; color: var(--blue); border: 2px solid var(--blue); }
+    .home-btn.secondary:hover { background: var(--bg); }
+
+    .btn { padding: 10px 18px; border-radius: 8px; border: none; background: var(--blue); color: white; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; transition: 0.2s ease; }
+    .btn:hover { background: var(--navy); }
+    .btn-danger { background: #e74c3c; } .btn-danger:hover { background: #c0392b; }
+    .btn-success { background: var(--green); } .btn-success:hover { background: #27ae60; }
+
+    .form-group { margin-bottom: 16px; text-align: left; }
+    label { font-weight: 600; font-size: 14px; display: block; margin-bottom: 6px; }
+    select, input[type="text"], input[type="number"] { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid #dbe2ec; font-family: 'DM Sans', sans-serif; font-size: 14px; transition: border 0.2s; }
+    select:focus, input:focus { outline: none; border-color: var(--blue); }
+    textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid #dbe2ec; font-family: 'DM Sans', sans-serif; font-size: 14px; resize: vertical; min-height: 64px; }
+    textarea:focus { outline: none; border-color: var(--blue); }
+
+    /* QUICK PRESETS */
+    .preset-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .preset-btn { padding: 8px 13px; border-radius: 20px; border: 1.5px solid #dbe2ec; background: white; font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; color: var(--text); transition: 0.2s; white-space: nowrap; }
+    .preset-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
+
+    /* EFFORT */
+    .effort-row { display: flex; gap: 8px; }
+    .effort-tag { flex: 1; padding: 9px; border-radius: 8px; border: 1.5px solid #dbe2ec; background: white; font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; text-align: center; transition: 0.2s; }
+    .effort-tag.selected { border-color: var(--blue); background: var(--blue); color: white; }
+    .effort-tag[data-effort="Easy"].selected { background: var(--green); border-color: var(--green); }
+    .effort-tag[data-effort="Moderate"].selected { background: var(--orange); border-color: var(--orange); }
+    .effort-tag[data-effort="Heavy"].selected { background: var(--red); border-color: var(--red); }
+
+    /* CARDS */
+    .card { background: white; margin: 12px 0; padding: 16px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); text-align: left; border-left: 4px solid var(--blue); transition: transform 0.2s, box-shadow 0.2s; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+    .card.priority-high { border-left-color: var(--red); }
+    .card.priority-medium { border-left-color: var(--accent); }
+    .card.priority-low { border-left-color: var(--green); }
+    .card.helped { background: #f0faf4; border-left-color: var(--green); }
+    .card.mine { background: #f5f8ff; }
+
+    .pulse-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--red); margin-right: 6px; animation: pulse 1.4s infinite; vertical-align: middle; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.5)} }
+
+    .card-meta { font-size: 13px; color: var(--muted); margin: 5px 0 10px; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-right: 5px; }
+    .badge-high { background: #fdecea; color: var(--red); }
+    .badge-medium { background: #fef9e7; color: #b7950b; }
+    .badge-low { background: #eafaf1; color: #1e8449; }
+    .badge-category { background: #eaf0fb; color: var(--blue); }
+    .badge-mine { background: #e8f0fe; color: #1a56c4; }
+    .badge-effort-easy { background: #eafaf1; color: #1e8449; }
+    .badge-effort-moderate { background: #fef5ec; color: #a04000; }
+    .badge-effort-heavy { background: #fdecea; color: var(--red); }
+
+    /* LOG CARD */
+    .log-card { background: var(--bg); margin: 10px 0; padding: 14px 16px; border-radius: 10px; text-align: left; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .log-info { font-size: 14px; flex: 1; }
+    .log-type { font-weight: 700; color: var(--blue); }
+    .log-note { font-size: 13px; color: var(--muted); margin-top: 4px; font-style: italic; }
+
+    /* STATS */
+    .stats-row { display: flex; gap: 10px; margin: 18px 0; }
+    .stat-box { flex: 1; background: var(--bg); border-radius: 12px; padding: 14px 10px; text-align: center; }
+    .stat-val { font-size: 26px; font-weight: 700; color: var(--blue); font-family: 'DM Serif Display', serif; }
+    .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.3; }
+
+    /* TOP CAT */
+    .top-cat-bar { background: linear-gradient(135deg, var(--navy), var(--blue)); color: white; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+    .top-cat-bar .label { font-size: 13px; opacity: 0.8; }
+    .top-cat-bar .value { font-size: 18px; font-weight: 700; font-family: 'DM Serif Display', serif; }
+
+    #balanceMessage { text-align: center; font-weight: 600; margin: 8px 0 16px; font-size: 15px; }
+
+    .chart-wrap { margin: 16px 0; padding: 16px; background: var(--bg); border-radius: 12px; }
+    .chart-wrap h4 { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* PROGRESS BAR */
+    .needs-progress { margin-bottom: 18px; }
+    .needs-progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+    .progress-track { background: #dbe2ec; border-radius: 20px; height: 8px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), #27ae60); border-radius: 20px; transition: width 0.5s ease; }
+
+    /* FILTER */
+    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .filter-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid #dbe2ec; background: white; font-size: 13px; font-family: 'DM Sans', sans-serif; cursor: pointer; font-weight: 500; transition: 0.2s; }
+    .filter-btn.active, .filter-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
+
+    #postNeedForm { display: none; background: var(--bg); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+
+    .avatar-circle { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--navy)); color: white; font-size: 28px; font-family: 'DM Serif Display', serif; display: flex; align-items: center; justify-content: center; margin: 16px auto; }
+
+    hr { border: none; border-top: 1px solid #eaeff6; margin: 18px 0; }
+    #confirmation { color: var(--green); font-weight: 600; margin-top: 10px; min-height: 22px; font-size: 14px; text-align: center; }
+
+    #aboutSection p { text-align: left; margin-bottom: 14px; line-height: 1.7; font-size: 15px; }
+    .sdg-tag { display: inline-block; background: var(--navy); color: white; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; margin: 8px 0; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>MRSM E DEVICE</h1>
+  <p>Mutual Resource & Skill Matcher</p>
+</header>
+
+<div id="profileBanner">
+  Logged in as <span id="bannerName">—</span> &nbsp;·&nbsp; <span id="bannerRole">—</span>
+  &nbsp;&nbsp;<button onclick="logout()" style="background:none;border:1.5px solid #dbe2ec;color:var(--muted);font-size:12px;padding:3px 10px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;">Log Out</button>
+</div>
+
+<main>
+
+  <!-- PROFILE SETUP -->
+  <section id="profileSetupSection" class="section" style="text-align:center;">
+    <h2>Welcome</h2>
+    <p class="section-sub">Set up your display profile to get started.</p>
+    <div id="profileAvatar" class="avatar-circle">?</div>
+    <div class="form-group" style="margin-top:12px;">
+      <label>Your Name</label>
+      <input type="text" id="profileName" placeholder="e.g. Ahmad Ridhwan">
+    </div>
+    <div class="form-group">
+      <label>Your Role in Community</label>
+      <select id="profileRole">
+        <option value="Resident">Resident</option>
+        <option value="Volunteer">Volunteer</option>
+        <option value="Student">Student</option>
+        <option value="Community Leader">Community Leader</option>
+        <option value="Caregiver">Caregiver</option>
+      </select>
+    </div>
+    <button class="btn" id="enterBtn" style="width:100%;padding:14px;font-size:15px;" onclick="saveProfile()">Enter Community →</button>
+    <p style="margin-top:12px;"><a href="#" id="skipLink" style="color:var(--muted);font-size:13px;" onclick="skipProfile(); return false;">Skip for now</a></p>
+  </section>
+
+  <!-- HOME -->
+  <section id="homeSection" class="section hidden">
+    <h2>Strengthening Neighbourhood Support</h2>
+    <p class="section-sub">Visualizing and redistributing community care work.</p>
+    <button class="home-btn" onclick="showSection('logSection')">📋 &nbsp;Support Log</button>
+    <button class="home-btn" onclick="showSection('dashboardSection')">📊 &nbsp;Care Insights</button>
+    <button class="home-btn" onclick="showSection('boardSection')">🤝 &nbsp;Community Needs</button>
+    <button class="home-btn secondary" onclick="showSection('aboutSection')">ℹ️ &nbsp;About This Project</button>
+  </section>
+
+  <!-- SUPPORT LOG -->
+  <section id="logSection" class="section hidden">
+    <h2>Support Log</h2>
+    <button class="back-link" onclick="showSection('homeSection')">← Back</button>
+
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;text-align:left;font-weight:600;">Quick-add:</p>
+    <div class="preset-row" id="presetRow"></div>
+    <hr>
+
+    <div class="form-group">
+      <label>Type of Support</label>
+      <select id="type">
+        <option value="Giving">Giving</option>
+        <option value="Receiving">Receiving</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <select id="category">
+        <option value="Physical">Physical</option>
+        <option value="Emotional">Emotional</option>
+        <option value="Time">Time</option>
+        <option value="Skills">Skills</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Hours</label>
+      <input type="number" id="hours" min="1" placeholder="e.g. 2">
+    </div>
+    <div class="form-group">
+      <label>Notes <span style="font-weight:400;color:var(--muted);">(optional)</span></label>
+      <textarea id="logNote" placeholder="e.g. Helped Mak Cik Zainab with grocery run"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Effort Level</label>
+      <div class="effort-row">
+        <div class="effort-tag" data-effort="Easy" onclick="selectEffort(this)">😌 Easy</div>
+        <div class="effort-tag" data-effort="Moderate" onclick="selectEffort(this)">💪 Moderate</div>
+        <div class="effort-tag" data-effort="Heavy" onclick="selectEffort(this)">🔥 Heavy</div>
+      </div>
+    </div>
+    <button class="btn" onclick="saveLog()" style="width:100%;padding:13px;margin-top:4px;">Save Log</button>
+    <p id="confirmation"></p>
+
+    <hr>
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">Saved Activities</h3>
+    <div id="logList"></div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dashboardSection" class="section hidden">
+    <h2>Care Insights</h2>
+    <button class="back-link" onclick="showSection('homeSection')">← Back</button>
+
+    <div id="topCatBar" class="top-cat-bar" style="display:none;">
+      <div><div class="label">Your Top Category</div><div class="value" id="topCatVal">—</div></div>
+      <div style="font-size:28px;" id="topCatEmoji">🏆</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val" id="totalGiving">0</div><div class="stat-lbl">Hours Giving</div></div>
+      <div class="stat-box"><div class="stat-val" id="totalReceiving">0</div><div class="stat-lbl">Hours Receiving</div></div>
+      <div class="stat-box"><div class="stat-val" id="totalLogs">0</div><div class="stat-lbl">Total Logs</div></div>
+    </div>
+
+    <p id="balanceMessage"></p>
+
+    <div class="chart-wrap"><h4>Giving vs Receiving</h4><canvas id="careChart" height="210"></canvas></div>
+    <div class="chart-wrap"><h4>Your Activity by Category</h4><canvas id="categoryChart" height="210"></canvas></div>
+    <div class="chart-wrap"><h4>Your 7-Day Activity Trend</h4><canvas id="trendChart" height="200"></canvas></div>
+    <div class="chart-wrap"><h4>Community Hours Given · Mock Data</h4><canvas id="communityChart" height="210"></canvas></div>
+    <div class="chart-wrap"><h4>Community Needs by Category</h4><canvas id="needsCategoryChart" height="210"></canvas></div>
+    <div class="chart-wrap"><h4>Needs Fulfilment Rate</h4><canvas id="fulfilmentChart" height="180"></canvas></div>
+  </section>
+
+  <!-- COMMUNITY NEEDS -->
+  <section id="boardSection" class="section hidden">
+    <h2>Community Needs</h2>
+    <button class="back-link" onclick="showSection('homeSection')">← Back</button>
+
+    <div class="needs-progress">
+      <div class="needs-progress-label"><span>Needs Fulfilled</span><span id="progressLabel">0 / 0</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <button class="btn" onclick="togglePostForm()" style="width:100%;margin-bottom:14px;">+ Post a Need</button>
+
+    <div id="postNeedForm">
+      <div class="form-group">
+        <label>Describe the Need</label>
+        <textarea id="needTitle" placeholder="e.g. Need help carrying groceries on Thursday"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="needCategory">
+          <option value="Physical">Physical</option>
+          <option value="Emotional">Emotional</option>
+          <option value="Time">Time</option>
+          <option value="Skills">Skills</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select id="needPriority">
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+      <button class="btn btn-success" onclick="postNeed()" style="width:100%;">Submit Need</button>
+    </div>
+
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="filterNeeds('All',this)">All</button>
+      <button class="filter-btn" onclick="filterNeeds('Physical',this)">Physical</button>
+      <button class="filter-btn" onclick="filterNeeds('Emotional',this)">Emotional</button>
+      <button class="filter-btn" onclick="filterNeeds('Time',this)">Time</button>
+      <button class="filter-btn" onclick="filterNeeds('Skills',this)">Skills</button>
+    </div>
+
+    <div id="needsContainer"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="aboutSection" class="section hidden">
+    <h2>About This Project</h2>
+    <button class="back-link" onclick="showSection('homeSection')">← Back</button>
+    <p><strong>MRSM E DEVICE</strong> (Mutual Resource & Skill Matcher – Empowerment DEVICE) is a digital platform designed to visualize and redistribute community support.</p>
+    <p>The system makes invisible care work measurable, highlights imbalances in giving and receiving support, and connects neighbourhood needs with local capacity.</p>
+    <span class="sdg-tag">🌍 SDG 11 – Sustainable Cities and Communities</span>
+    <p style="margin-top:14px;">Promoting resilient and supportive neighbourhood ecosystems. Developed as part of the SEM enrichment initiative — demonstrating how technology can strengthen community coordination without monetary exchange.</p>
+  </section>
+
+</main>
+
+<script>
+// =========================
+// HELPERS
+// =========================
+function daysAgo(n) {
+  let d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toLocaleDateString('en-MY');
+}
+
+// =========================
+// PLACEHOLDER DATA
+// =========================
+const PLACEHOLDER_LOGS = [
+  { type:'Giving',    category:'Physical',  hours:2, effort:'Moderate', note:"Helped Pak Hamid carry furniture to his new unit",           date:daysAgo(0) },
+  { type:'Giving',    category:'Skills',    hours:3, effort:'Moderate', note:"Tutored two Form 3 students in 
